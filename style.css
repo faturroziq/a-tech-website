@@ -1,0 +1,187 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #000000, #424242);
+    color: white;
+    opacity: 70%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    padding: 20px;
+}
+
+/* Background Logo */
+.has-bg-logo::before {
+    content: '';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60vw; /* Responsive width */
+    height: 60vh; /* Responsive height */
+    max-width: 500px;
+    max-height: 500px;
+    background: url('logo-kelas.png') center center no-repeat;
+    background-size: contain;
+    opacity: 0.1;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Untuk mobile */
+@media (max-width: 768px) {
+    .has-bg-logo::before {
+        width: 80vw;
+        height: 80vw; /* Square aspect ratio */
+        max-width: 300px;
+        max-height: 300px;
+        opacity: 0.08;
+    }
+}
+
+.logo-image {
+    width: 400px;
+    height: 400px;
+    position fixed center;
+    object-fit: contain;
+    top = 50%;
+    left = 50%;
+    opacity: 0.1;
+    transition: all 0.5s ease;
+    filter: grayscale(100%) brightness(200%);
+}
+
+/* Efek saat hover (optional) */
+.logo-image:hover {
+  position fixed;
+    opacity: 1;
+    transform: scale(1.05);
+    top: 100%;
+    left -100%
+    filter: grayscale(50%) brightness(150%);
+}
+
+/* Container Utama */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+/* Welcome Text */
+.welcome-text {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    line-height: 1.2;
+}
+
+/* DateTime */
+.datetime {
+    margin-bottom: 3rem;
+}
+
+#time {
+    font-size: 3.5rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+#date {
+    font-size: 1.5rem;
+    opacity: 0.9;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Section Umum */
+.section {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.section h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+/* List Jadwal & Tugas */
+.schedule-list, .task-list {
+    list-style: none;
+    text-align: left;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.schedule-list li, .task-list li {
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    border-left: 4px solid #fdbb2d;
+    transition: transform 0.2s ease;
+}
+
+.schedule-list li:hover, .task-list li:hover {
+    transform: translateX(5px);
+    background: rgba(255,255,255,0.15);
+}
+
+/* Tugas khusus */
+.task-list li {
+    border-left-color: #3498db;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .welcome-text {
+        font-size: 2rem;
+    }
+    
+    #time {
+        font-size: 2.5rem;
+    }
+    
+    .bg-logo {
+        font-size: 30vw;
+    }
+    
+    .section {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .welcome-text {
+        font-size: 1.8rem;
+    }
+    
+    #time {
+        font-size: 2rem;
+    }
+    
+    #date {
+        font-size: 1.2rem;
+    }
+    
+    .section h2 {
+        font-size: 1.3rem;
+    }
+}
