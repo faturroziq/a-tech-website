@@ -62,8 +62,8 @@ body {
   position fixed;
     opacity: 1;
     transform: scale(1.05);
-    top: 100%;
-    left -100%
+    top = 100%;
+    left = -100%;
     filter: grayscale(50%) brightness(150%);
 }
 
