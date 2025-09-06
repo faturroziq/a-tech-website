@@ -114,7 +114,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!tugasList) return;
         
         // Data tugas dummy
-        const tugasData = ['Coming Soon'
+        const tugasData = ['TUGAS SISTEM INFORMASI            | DEADLINE = SENIN PAGI',
+                           'TUGAS PTKI (BUAT MODULE KOMPUTER  | DEADLINE SENIN'
         ];
         
         tugasList.innerHTML = '';
