@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-TECH CLASS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="has-bg-logo">
+    <!-- Background Logo -->
+    <div class="bg-logo">
+        <img src="kelas.png" alt="A-TECH CLASS Logo" class="logo-image">
+    </div>
+
+    <!-- Container Utama -->
+    <div class="container">
+        <!-- Home Section -->
+        <div id="home-container" class="content-container content-active">
+            <!-- Header -->
+            <h1 class="welcome-text">WELCOME TO<br>A-TECHNOLOGY CLASS</h1>
+
+            <!-- DateTime -->
+            <div class="datetime">
+                <div id="time">00:00:00</div>
+                <div id="date">SEMA 01:01:2025</div>
+            </div>
+
+            <!-- Jadwal Besok -->
+            <div class="section schedule-section">
+                <h2>JADWAL BESOK :</h2>
+                <ul class="schedule-list" id="jadwal-list">
+                    <!-- Diisi oleh JavaScript -->
+                </ul>
+            </div>
+
+            <!-- Tugas Hari Ini -->
+            <div class="section">
+                <h2>TUGAS MINGGU INI :</h2>
+                <ul class="task-list" id="tugas-list">
+                    <!-- Diisi oleh JavaScript -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Jadwal Mapel Section -->
+        <div id="jadwal-container" class="content-container">
+            <!-- Akan diisi oleh JavaScript -->
+        </div>
+
+        <!-- Info Ruangan Section -->
+        <div id="ruangan-container" class="content-container">
+            <!-- Akan diisi oleh JavaScript -->
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <button class="nav-btn" onclick="showSection('jadwal')">
+            <span class="nav-icon">📅</span>
+            <span class="nav-text">Jadwal Mapel</span>
+        </button>
+
+        <button class="nav-btn nav-active" onclick="showSection('home')">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-text">Home</span>
+        </button>
+
+        <button class="nav-btn" onclick="showSection('ruangan')">
+            <span class="nav-icon">🚪</span>
+            <span class="nav-text">Info Ruangan</span>
+        </button>
+    </nav>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
