@@ -109,6 +109,16 @@ const jadwalPerHari = {
             mapel: 'Basis Data Praktek',
             waktu: '13:50-14:40',
             type: 'Praktek'
+        },
+        {
+            mapel: 'Basis Data Praktek',
+            waktu: '14:40-15:30',
+            type: 'Praktek'
+        },
+        {
+            mapel: 'Sistem Operasi',
+            waktu: '15:45-16:35',
+            type: 'Teori'
         }
     ],
     'SELASA': [
@@ -139,6 +149,16 @@ const jadwalPerHari = {
         },
         {
             mapel: 'Aljabar Linear Teori',
+            waktu: '13:50-14:40',
+            type: 'Teori'
+        },
+        {
+            mapel: 'Aljabar Linear Teori',
+            waktu: '14:40-15:30',
+            type: 'Teori'
+        },
+        {
+            mapel: 'UI/UX Design',
             waktu: '15:45-16:35',
             type: 'Teori'
         }
@@ -163,6 +183,26 @@ const jadwalPerHari = {
             mapel: 'Sistem Informasi',
             waktu: '10:15-11:05',
             type: 'Teori'
+        },
+        {
+            mapel: 'Sistem Informasi',
+            waktu: '11:05-11:55',
+            type: 'Teori'
+        },
+        {
+            mapel: 'Proyek Perangkat Lunak',
+            waktu: '13:50-14:40',
+            type: 'Praktek'
+        },
+        {
+            mapel: 'Proyek Perangkat Lunak',
+            waktu: '14:40-15:30',
+            type: 'Praktek'
+        },
+        {
+            mapel: 'Proyek Perangkat Lunak',
+            waktu: '15:45-16:35',
+            type: 'Praktek'
         }
     ],
     'KAMIS': [
@@ -172,35 +212,60 @@ const jadwalPerHari = {
             type: 'Praktek'
         },
         {
-            mapel: 'Pengantar Teknologi Komputer dan Informasi Teori',
+            mapel: 'Basis Data Praktek',
             waktu: '08:20-09:10',
+            type: 'Praktek'
+        },
+        {
+            mapel: 'Pengantar Teknologi Komputer dan Informasi Teori',
+            waktu: '09:10-10:00',
+            type: 'Teori'
+        },
+        {
+            mapel: 'Pengantar Teknologi Komputer dan Informasi Teori',
+            waktu: '10:15-11:05',
             type: 'Teori'
         },
         {
             mapel: 'Algoritma dan Pemrograman Teori',
-            waktu: '13:00-13:50',
+            waktu: '11:05-11:55',
             type: 'Teori'
-        }
-    ],
-    'JUMAT': [
+        },
         {
             mapel: 'Algoritma dan Pemrograman Teori',
-            waktu: '07:30-08:20',
+            waktu: '13:50-14:40',
+            type: 'Teori'
+        },
+        {
+            mapel: 'Basis Data Teori',
+            waktu: '14:40-15:30',
+            type: 'Teori'
+        },
+        {
+            mapel: 'Basis Data Teori',
+            waktu: '15:45-16:35',
             type: 'Teori'
         }
     ],
+    'JUMAT': [],
     'SABTU': [],
     'MINGGU': []
 };
 
 // ===== FUNGSI UTAMA =====
 function init() {
+    console.log('🚀 Initializing A-TECH CLASS website...');
     updateDateTime();
-    updateJadwalHariIni();
+    updateJadwalWithButtons();
     updateTugasHariIni();
     setupBottomNav();
     setupAutoRefresh();
-    setInterval(updateDateTime, 1000);
+
+    // Start the time update interval
+    const timeInterval = setInterval(updateDateTime, 1000);
+    console.log('⏰ Time update interval started:', timeInterval);
+
+    console.log('✅ Initialization complete!');
 }
 
 // ===== DATE & TIME =====
@@ -222,51 +287,150 @@ function updateDateTime() {
     const timeElement = document.getElementById('time');
     const dateElement = document.getElementById('date');
 
-    if (timeElement) timeElement.textContent = timeString;
-    if (dateElement) dateElement.textContent = dateString;
+    if (timeElement) {
+        timeElement.textContent = timeString;
+        console.log('Time updated:', timeString); // Debug log
+    }
+    if (dateElement) {
+        dateElement.textContent = dateString;
+        console.log('Date updated:', dateString); // Debug log
+    }
 }
 
-// ===== JADWAL BESOK =====
-function updateJadwalHariIni() {
-    const jadwalList = document.getElementById('jadwal-list');
-    if (!jadwalList) return;
+// ===== JADWAL BESOK & HARI INI DENGAN BUTTON =====
+function updateJadwalWithButtons() {
+    const container = document.querySelector('.schedule-section');
+    if (!container) return;
 
-    const hariIni = new Date().getDay();
+    const hariIniIndex = new Date().getDay();
     const hariList = ['MINGGU', 'SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU'];
-    const hariBesokIndex = (hariIni + 1) % 7;
+    const hariIni = hariList[hariIniIndex];
+    const hariBesokIndex = (hariIniIndex + 1) % 7;
     const hariBesok = hariList[hariBesokIndex];
 
-    const jadwalBesok = jadwalPerHari[hariBesok] || [];
+    container.innerHTML = `
+        <div class="day-buttons-container">
+            <button id="btn-hari-ini" class="day-btn active" aria-pressed="true">Jadwal Hari Ini</button>
+            <button id="btn-hari-besok" class="day-btn" aria-pressed="false">Jadwal Besok</button>
+        </div>
+        <ul class="schedule-list" id="jadwal-list"></ul>
+    `;
 
+    const jadwalList = container.querySelector('#jadwal-list');
+
+    function renderJadwal(hari, transitionType = 'up') {
+        const jadwal = jadwalPerHari[hari] || [];
+
+        // Add transition out animation first
+        jadwalList.classList.add('schedule-transition-down');
+
+        setTimeout(() => {
+            jadwalList.innerHTML = '';
+
+            if (jadwal.length === 0) {
+                const li = document.createElement('li');
+                li.innerHTML = `🎉 LIBUR! Tidak ada jadwal ${hari.toLowerCase()}`;
+                li.style.animationDelay = '0.2s';
+                li.style.opacity = '1';
+                jadwalList.appendChild(li);
+            } else {
+                jadwal.forEach((jadwalItem, index) => {
+                    const infoMapel = semuaMapel[jadwalItem.mapel] || {};
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <div class="jadwal-item">
+                            <div class="jadwal-header">
+                                <strong>${jadwalItem.mapel}</strong>
+                                <span class="jadwal-type ${jadwalItem.type.toLowerCase()}">${jadwalItem.type}</span>
+                            </div>
+                            <span class="jadwal-waktu">⏰ ${jadwalItem.waktu}</span>
+                            <span class="jadwal-ruangan">🚪 ${infoMapel.ruangan || 'TBA'}</span>
+                            <small class="jadwal-dosen">👨‍🏫 ${infoMapel.dosen || 'TBA'}</small>
+                        </div>
+                    `;
+                    li.style.animationDelay = `${0.2 + (index * 0.1)}s`;
+                    li.style.opacity = '1';
+                    jadwalList.appendChild(li);
+                });
+            }
+
+            // Remove transition classes and add transition in
+            jadwalList.classList.remove('schedule-transition-down');
+            jadwalList.classList.add('schedule-transition-up');
+
+            // Clean up transition class after animation
+            setTimeout(() => {
+                jadwalList.classList.remove('schedule-transition-up');
+            }, 600);
+        }, 400);
+    }
+
+    // Initial render for hari ini (without transition)
+    const jadwal = jadwalPerHari[hariIni] || [];
     jadwalList.innerHTML = '';
 
-    if (jadwalBesok.length === 0) {
-        jadwalList.innerHTML = '<li>🎉 LIBUR! Tidak ada jadwal besok</li>';
+    if (jadwal.length === 0) {
+        const li = document.createElement('li');
+        li.innerHTML = `🎉 LIBUR! Tidak ada jadwal ${hariIni.toLowerCase()}`;
+        li.style.animationDelay = '0.1s';
+        li.style.opacity = '1';
+        jadwalList.appendChild(li);
     } else {
-        jadwalBesok.forEach(jadwal => {
-            const infoMapel = semuaMapel[jadwal.mapel] || {};
+        jadwal.forEach((jadwalItem, index) => {
+            const infoMapel = semuaMapel[jadwalItem.mapel] || {};
             const li = document.createElement('li');
-
             li.innerHTML = `
                 <div class="jadwal-item">
                     <div class="jadwal-header">
-                        <strong>${jadwal.mapel}</strong>
-                        <span class="jadwal-type ${jadwal.type.toLowerCase()}">${jadwal.type}</span>
+                        <strong>${jadwalItem.mapel}</strong>
+                        <span class="jadwal-type ${jadwalItem.type.toLowerCase()}">${jadwalItem.type}</span>
                     </div>
-                    <span class="jadwal-waktu">⏰ ${jadwal.waktu}</span>
+                    <span class="jadwal-waktu">⏰ ${jadwalItem.waktu}</span>
                     <span class="jadwal-ruangan">🚪 ${infoMapel.ruangan || 'TBA'}</span>
                     <small class="jadwal-dosen">👨‍🏫 ${infoMapel.dosen || 'TBA'}</small>
                 </div>
             `;
-
+            li.style.animationDelay = `${(index + 1) * 0.1}s`;
+            li.style.opacity = '1';
             jadwalList.appendChild(li);
         });
     }
 
-    const judulSection = document.querySelector('.schedule-section h2');
-    if (judulSection) {
-        judulSection.textContent = `JADWAL BESOK (${hariBesok}) :`;
-    }
+    // Button event listeners with 3D hover animation and smooth transitions
+    const btnHariIni = document.getElementById('btn-hari-ini');
+    const btnHariBesok = document.getElementById('btn-hari-besok');
+
+    btnHariIni.addEventListener('click', () => {
+        if (btnHariIni.classList.contains('active')) return; // Prevent double-click
+
+        // Add click animation
+        btnHariIni.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            btnHariIni.style.transform = '';
+        }, 150);
+
+        btnHariIni.classList.add('active');
+        btnHariIni.setAttribute('aria-pressed', 'true');
+        btnHariBesok.classList.remove('active');
+        btnHariBesok.setAttribute('aria-pressed', 'false');
+        renderJadwal(hariIni, 'up');
+    });
+
+    btnHariBesok.addEventListener('click', () => {
+        if (btnHariBesok.classList.contains('active')) return; // Prevent double-click
+
+        // Add click animation
+        btnHariBesok.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            btnHariBesok.style.transform = '';
+        }, 150);
+
+        btnHariBesok.classList.add('active');
+        btnHariBesok.setAttribute('aria-pressed', 'true');
+        btnHariIni.classList.remove('active');
+        btnHariIni.setAttribute('aria-pressed', 'false');
+        renderJadwal(hariBesok, 'up');
+    });
 }
 
 // ===== TUGAS HARI INI =====
@@ -464,8 +628,35 @@ function generateMapelContent(hari) {
 
 // ===== AUTO REFRESH =====
 function setupAutoRefresh() {
-    // Refresh setiap jam
-    setInterval(updateJadwalHariIni, 3600000);
+    // Refresh setiap jam - update jadwal buttons
+    setInterval(() => {
+        // Only update the content, not recreate buttons
+        const hariIniIndex = new Date().getDay();
+        const hariList = ['MINGGU', 'SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU'];
+        const hariIni = hariList[hariIniIndex];
+        const hariBesokIndex = (hariIniIndex + 1) % 7;
+        const hariBesok = hariList[hariBesokIndex];
+
+        // Update active button based on current time
+        const btnHariIni = document.getElementById('btn-hari-ini');
+        const btnHariBesok = document.getElementById('btn-hari-besok');
+
+        if (btnHariIni && btnHariBesok) {
+            // If it's after 6 PM, switch to tomorrow's schedule
+            const currentHour = new Date().getHours();
+            if (currentHour >= 18) {
+                btnHariBesok.classList.add('active');
+                btnHariBesok.setAttribute('aria-pressed', 'true');
+                btnHariIni.classList.remove('active');
+                btnHariIni.setAttribute('aria-pressed', 'false');
+            } else {
+                btnHariIni.classList.add('active');
+                btnHariIni.setAttribute('aria-pressed', 'true');
+                btnHariBesok.classList.remove('active');
+                btnHariBesok.setAttribute('aria-pressed', 'false');
+            }
+        }
+    }, 3600000); // Every hour
 
     // Refresh setiap hari jam 00:00
     const now = new Date();
@@ -476,8 +667,9 @@ function setupAutoRefresh() {
     const timeUntilMidnight = tomorrow - now;
 
     setTimeout(() => {
-        updateJadwalHariIni();
-        setInterval(updateJadwalHariIni, 86400000);
+        // Full refresh at midnight
+        updateJadwalWithButtons();
+        setInterval(updateJadwalWithButtons, 86400000);
     }, timeUntilMidnight);
 }
 
