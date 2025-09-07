@@ -5,7 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A-TECH CLASS</title>
     <link rel="stylesheet" href="style.css">
+
+    <!-- Taruh ini SEBELUM </body> -->
+<nav class="bottom-nav">
+    <button class="nav-btn" onclick="showSection('jadwal')">
+        <span class="nav-icon">📅</span>
+        <span class="nav-text">Jadwal Mapel</span>
+    </button>
+    
+    <button class="nav-btn nav-active" onclick="showSection('home')">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-text">Home</span>
+    </button>
+    
+    <button class="nav-btn" onclick="showSection('ruangan')">
+        <span class="nav-icon">🚪</span>
+        <span class="nav-text">Info Ruangan</span>
+    </button>
+</nav>
+    
 </head>
+    
 <body>
     <!-- Background Logo -->
     <div class="has-bg-logo">
@@ -38,6 +58,20 @@
                 <!-- Diisi oleh JavaScript -->
             </ul>
         </div>
+
+<!-- Tambahkan ini di dalam .container -->
+<div id="home-container" class="content-container content-active">
+    <!-- Konten home yang sudah ada -->
+</div>
+
+<div id="jadwal-container" class="content-container">
+    <!-- Akan diisi oleh JavaScript -->
+</div>
+
+<div id="ruangan-container" class="content-container">
+    <!-- Akan diisi oleh JavaScript -->
+</div>
+        
     </div>
 
     <script src="script.js"></script>
