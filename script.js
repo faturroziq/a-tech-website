@@ -328,76 +328,139 @@ function showRuanganByHari() {
     return html;
 }
 
-// ===== JADWAL PER HARI =====
+// ===== JADWAL PER HARI DENGAN ANIMASI =====
 function showAllMapel() {
-    const hariList = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU', 'MINGGU'];
-
-    // Find max number of mapel rows in any day except Jumat (libur)
-    let maxRows = 0;
-    hariList.forEach(hari => {
-        if (hari === 'JUMAT') return; // skip Jumat
-        const count = jadwalPerHari[hari] ? jadwalPerHari[hari].length : 0;
-        if (count > maxRows) maxRows = count;
-    });
+    const hariList = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT'];
 
     let html = `
         <div class="mapel-header">
             <h3>📚 JADWAL MAPEL HARIAN</h3>
-            <p>Senin - Kamin | Jumat Libur</p>
+            <p>Senin - Kamis | Jumat Libur</p>
         </div>
-        <table class="jadwal-table" border="1" cellspacing="0" cellpadding="5" style="width: 100%; text-align: center;">
-            <thead>
-                <tr>
+        <div class="day-buttons-container">
     `;
 
     hariList.forEach(hari => {
-        if (hari === 'JUMAT') {
-            html += `<th>${hari} (Libur)</th>`;
-        } else {
-            html += `<th>${hari}</th>`;
-        }
+        const isActive = hari === 'SENIN'; // Default to Senin
+        html += `
+            <button class="day-btn ${isActive ? 'active' : ''}" onclick="showMapelByDay('${hari}')">
+                <span class="day-icon">${getDayIcon(hari)}</span>
+                <span class="day-name">${hari}</span>
+            </button>
+        `;
     });
 
     html += `
-                </tr>
-            </thead>
-            <tbody>
-    `;
-
-    for (let row = 0; row < maxRows; row++) {
-        html += '<tr>';
-        hariList.forEach(hari => {
-if (hari === 'JUMAT') {
-    html += '<td>Libur</td>';
-} else {
-                const jadwalHari = jadwalPerHari[hari] || [];
-                if (jadwalHari[row]) {
-                    const jadwal = jadwalHari[row];
-                    const infoMapel = semuaMapel[jadwal.mapel] || {};
-                    html += `
-                        <td>
-                            <strong>${jadwal.mapel}</strong><br/>
-                            <small>${jadwal.waktu}</small><br/>
-                            <small>${jadwal.type}</small><br/>
-                            <small>👨‍🏫 ${infoMapel.dosen || 'TBA'}</small><br/>
-                            <small>🚪 ${infoMapel.ruangan || 'TBA'}</small>
-                        </td>
-                    `;
-                } else {
-                    html += '<td></td>';
-                }
-            }
-        });
-        html += '</tr>';
-    }
-
-    html += `
-            </tbody>
-        </table>
+        </div>
+        <div id="mapel-content" class="mapel-content">
+            ${generateMapelContent('SENIN')}
+        </div>
     `;
 
     return html;
 }
+
+function getDayIcon(hari) {
+    const icons = {
+        'SENIN': '🌅',
+        'SELASA': '☀️',
+        'RABU': '🌤️',
+        'KAMIS': '⛅',
+        'JUMAT': '🎉'
+    };
+    return icons[hari] || '📅';
+}
+
+function showMapelByDay(hari) {
+    // Update active button
+    document.querySelectorAll('.day-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.closest('.day-btn').classList.add('active');
+
+    // Update content with animation
+    const content = document.getElementById('mapel-content');
+    content.style.opacity = '0';
+    content.style.transform = 'translateY(20px)';
+
+    setTimeout(() => {
+        content.innerHTML = generateMapelContent(hari);
+        content.style.opacity = '1';
+        content.style.transform = 'translateY(0)';
+    }, 300);
+}
+
+function generateMapelContent(hari) {
+    const jadwalHari = jadwalPerHari[hari] || [];
+
+    if (jadwalHari.length === 0) {
+        return `
+            <div class="no-schedule glitch-text">
+                <h4>🎉 LIBUR!</h4>
+                <p>Tidak ada jadwal hari ${hari}</p>
+            </div>
+        `;
+    }
+
+    // Group by type
+    const groupedMapel = {
+        'Teori': [],
+        'Praktek': []
+    };
+
+    jadwalHari.forEach(jadwal => {
+        const type = jadwal.type;
+        if (!groupedMapel[type]) groupedMapel[type] = [];
+        groupedMapel[type].push(jadwal);
+    });
+
+    let html = `<div class="day-title glitch-text">${hari}</div>`;
+
+    Object.keys(groupedMapel).forEach(type => {
+        const mapels = groupedMapel[type];
+        if (mapels.length === 0) return;
+
+        html += `
+            <div class="category-section">
+                <h4 class="category-title ${type.toLowerCase()}">${type}</h4>
+                <div class="mapel-grid">
+        `;
+
+        mapels.forEach((jadwal, index) => {
+            const infoMapel = semuaMapel[jadwal.mapel] || {};
+            html += `
+                <div class="mapel-card" style="animation-delay: ${index * 0.1}s">
+                    <div class="mapel-header-card">
+                        <h5>${jadwal.mapel}</h5>
+                        <span class="mapel-time">⏰ ${jadwal.waktu}</span>
+                    </div>
+                    <div class="mapel-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">👨‍🏫</span>
+                            <span>${infoMapel.dosen || 'TBA'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">🚪</span>
+                            <span>${infoMapel.ruangan || 'TBA'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">📚</span>
+                            <span>${infoMapel.sks || 0} SKS</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        html += `
+                </div>
+            </div>
+        `;
+    });
+
+    return html;
+}
+
 
 // ===== AUTO REFRESH =====
 function setupAutoRefresh() {
@@ -454,6 +517,7 @@ function showJadwalSection() {
     container.innerHTML = showAllMapel();
     container.classList.add('content-active');
 }
+
 function showHomeSection() {
     document.getElementById('home-container').classList.add('content-active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
