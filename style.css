@@ -225,8 +225,9 @@ body {
     font-size: clamp(0.9rem, 2vw, 1rem);
     border: 1px solid rgba(128, 128, 128, 0.2);
     box-shadow: 0 0 8px rgba(128, 128, 128, 0.1);
-    animation: fadeInLeft 0.6s ease-out;
+    animation: scheduleItemEntrance 0.6s ease-out;
     animation-fill-mode: both;
+    opacity: 0;
 }
 
 .schedule-list li:nth-child(1) { animation-delay: 0.1s; }
@@ -244,6 +245,51 @@ body {
         opacity: 1;
         transform: translateX(0);
     }
+}
+
+@keyframes scheduleItemEntrance {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes scheduleTransitionUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scaleY(0.3) scaleX(0.95);
+        transform-origin: bottom center;
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scaleY(1) scaleX(1);
+        transform-origin: bottom center;
+    }
+}
+
+@keyframes scheduleTransitionDown {
+    from {
+        opacity: 1;
+        transform: translateY(0) scaleY(1) scaleX(1);
+        transform-origin: top center;
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-50px) scaleY(0.3) scaleX(0.95);
+        transform-origin: top center;
+    }
+}
+
+.schedule-transition-up {
+    animation: scheduleTransitionUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.schedule-transition-down {
+    animation: scheduleTransitionDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .schedule-list li:hover, .task-list li:hover {
@@ -354,6 +400,32 @@ body {
     min-width: 100px;
     position: relative;
     overflow: hidden;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    animation: buttonEntrance 0.8s ease-out;
+    animation-fill-mode: both;
+}
+
+.day-btn:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+.day-btn:nth-child(2) {
+    animation-delay: 0.4s;
+}
+
+@keyframes buttonEntrance {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 .day-btn::before {
@@ -372,21 +444,34 @@ body {
 }
 
 .day-btn:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px) rotateX(10deg) rotateY(10deg);
+    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2), 0 0 30px rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.6);
+    animation: buttonPulse 0.6s ease-in-out;
+}
+
+.day-btn:active {
+    transform: translateY(-2px) rotateX(5deg) rotateY(5deg);
+    box-shadow: 0 5px 10px rgba(255, 255, 255, 0.1);
 }
 
 .day-btn.active {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(200, 200, 200, 0.9));
     color: #000;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6), 0 4px 8px rgba(0, 0, 0, 0.2);
     animation: glow 2s infinite alternate;
+    transform: translateY(-3px);
 }
 
 @keyframes glow {
-    from { box-shadow: 0 0 15px rgba(255, 255, 255, 0.6); }
-    to { box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+    from { box-shadow: 0 0 15px rgba(255, 255, 255, 0.6), 0 4px 8px rgba(0, 0, 0, 0.2); }
+    to { box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 6px 12px rgba(0, 0, 0, 0.3); }
+}
+
+@keyframes buttonPulse {
+    0% { transform: translateY(-5px) rotateX(10deg) rotateY(10deg) scale(1); }
+    50% { transform: translateY(-8px) rotateX(15deg) rotateY(15deg) scale(1.05); }
+    100% { transform: translateY(-5px) rotateX(10deg) rotateY(10deg) scale(1); }
 }
 
 .day-icon {
@@ -395,7 +480,7 @@ body {
 }
 
 .day-btn:hover .day-icon {
-    transform: scale(1.2);
+    transform: scale(1.2) rotate(5deg);
 }
 
 .day-name {
@@ -547,6 +632,13 @@ body {
 
 .content-active {
     display: block;
+}
+
+/* ===== SCHEDULE LIST ANIMATIONS ===== */
+.schedule-list {
+    position: relative;
+    overflow: hidden;
+    min-height: 100px; /* Prevent layout shift during transitions */
 }
 
 @keyframes fadeIn {
