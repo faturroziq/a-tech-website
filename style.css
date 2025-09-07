@@ -202,6 +202,109 @@ body {
     }
 }
 
+/* ===== STYLING UNTUK INFO RUANGAN ===== */
+.ruangan-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.ruangan-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    margin: 0.8rem 0;
+    border-radius: 10px;
+    border-left: 4px solid #3498db;
+}
+
+.mapel-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.mapel-info strong {
+    font-size: 1.1rem;
+}
+
+.ruangan-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.room-badge {
+    background: rgba(52, 152, 219, 0.3);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.no-schedule {
+    text-align: center;
+    padding: 2rem;
+    opacity: 0.7;
+}
+
+/* ===== STYLING UNTUK SEMUA MAPEL ===== */
+.mapel-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.mapel-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.2rem;
+    margin: 1rem 0;
+    border-radius: 10px;
+    border-left: 4px solid #fdbb2d;
+}
+
+.mapel-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+
+.mapel-main h4 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.sks-badge {
+    background: rgba(253, 187, 45, 0.3);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.mapel-details p {
+    margin: 0.3rem 0;
+    opacity: 0.9;
+}
+
+/* ===== CONTAINER UNTUK KONTEN DINAMIS ===== */
+.content-container {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.content-active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+    }
+    
 /* Tambah padding untuk konten utama */
 .container {
     padding-bottom: 90px !important;
