@@ -1,4 +1,4 @@
-/* Reset */
+/* ===== BASE STYLES ===== */
 * {
     margin: 0;
     padding: 0;
@@ -7,67 +7,319 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #000000, #424242);
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
     color: white;
-    opacity: 70%;
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
-    padding: 20px;
+    padding: 1rem;
 }
 
-/* Background Logo */
-.has-bg-logo::before {
-    content: '';
+/* ===== BACKGROUND LOGO ===== */
+.bg-logo {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 60vw; /* Responsive width */
-    height: 60vh; /* Responsive height */
-    max-width: 500px;
-    max-height: 500px;
-    background: url('logo-kelas.png') center center no-repeat;
-    background-size: contain;
-    opacity: 0.1;
-    z-index: -1;
+    width: min(500px, 60vw, 60vh);
+    height: min(500px, 60vw, 60vh);
+    z-index: -9999;
     pointer-events: none;
-}
-
-/* Untuk mobile */
-@media (max-width: 768px) {
-    .has-bg-logo::before {
-        width: 80vw;
-        height: 80vw; /* Square aspect ratio */
-        max-width: 300px;
-        max-height: 300px;
-        opacity: 0.08;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .logo-image {
-    width: 400px;
-    height: 400px;
-    position fixed center;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
-    top = 50%;
-    left = 50%;
     opacity: 0.1;
-    transition: all 0.5s ease;
     filter: grayscale(100%) brightness(200%);
 }
 
-/* Efek saat hover (optional) */
-.logo-image:hover {
-  position fixed;
-    opacity: 1;
-    transform: scale(1.05);
-    top = 100%;
-    left = -100%;
-    filter: grayscale(50%) brightness(150%);
+/* ===== CONTAINER UTAMA ===== */
+.container {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(1rem, 3vw, 2rem);
+    text-align: center;
+    padding-bottom: 90px !important;
 }
 
-    /* ===== BOTTOM NAVIGATION ===== */
+/* ===== WELCOME TEXT ===== */
+.welcome-text {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: clamp(1.5rem, 4vw, 2rem);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    line-height: 1.2;
+}
+
+/* ===== DATE & TIME ===== */
+.datetime {
+    margin-bottom: clamp(2rem, 5vw, 3rem);
+}
+
+#time {
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: clamp(1px, 1vw, 3px);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    margin-bottom: 0.5rem;
+}
+
+#date {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    opacity: 0.9;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+/* ===== SECTIONS ===== */
+.section {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: clamp(1rem, 3vw, 1.5rem);
+    border-radius: clamp(10px, 2vw, 15px);
+    margin-bottom: clamp(1rem, 3vw, 2rem);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.section h2 {
+    margin-bottom: clamp(0.8rem, 2vw, 1rem);
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+/* ===== LISTS ===== */
+.schedule-list, .task-list {
+    list-style: none;
+    text-align: left;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.schedule-list li, .task-list li {
+    padding: clamp(0.8rem, 2vw, 1rem);
+    margin: clamp(0.4rem, 1.5vw, 0.6rem) 0;
+    background: rgba(255,255,255,0.1);
+    border-radius: clamp(8px, 1.5vw, 12px);
+    border-left: 4px solid #fdbb2d;
+    transition: all 0.3s ease;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+}
+
+.schedule-list li:hover, .task-list li:hover {
+    transform: translateX(5px);
+    background: rgba(255,255,255,0.15);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.task-list li {
+    border-left-color: #3498db;
+}
+
+/* ===== STYLING UNTUK JADWAL HARI INI ===== */
+.jadwal-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.jadwal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.jadwal-item strong {
+    font-size: 1.1rem;
+    color: #fdbb2d;
+    flex: 1;
+}
+
+.jadwal-type {
+    padding: 0.3rem 0.8rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+}
+
+.jadwal-type.teori {
+    background: rgba(52, 152, 219, 0.3);
+    color: #3498db;
+}
+
+.jadwal-type.praktikum {
+    background: rgba(46, 204, 113, 0.3);
+    color: #2ecc71;
+}
+
+.jadwal-type.project {
+    background: rgba(155, 89, 182, 0.3);
+    color: #9b59b6;
+}
+
+.jadwal-type.lab {
+    background: rgba(241, 196, 15, 0.3);
+    color: #f1c40f;
+}
+
+.jadwal-waktu {
+    background: rgba(52, 152, 219, 0.2);
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    align-self: flex-start;
+}
+
+.jadwal-ruangan {
+    background: rgba(253, 187, 45, 0.2);
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    align-self: flex-start;
+}
+
+.jadwal-dosen {
+    opacity: 0.8;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+/* Efek hover untuk jadwal item */
+.schedule-list li:hover .jadwal-item strong {
+    color: #3498db;
+}
+
+.schedule-list li:hover .jadwal-waktu {
+    background: rgba(52, 152, 219, 0.3);
+}
+
+.schedule-list li:hover .jadwal-ruangan {
+    background: rgba(253, 187, 45, 0.3);
+}
+
+/* ===== CONTENT CONTAINERS ===== */
+.content-container {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.content-active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== STYLING UNTUK INFO RUANGAN ===== */
+.ruangan-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding: 1.2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.ruangan-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.2rem;
+    margin: 1rem 0;
+    border-radius: 12px;
+    border-left: 4px solid #3498db;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.mapel-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+
+.mapel-info strong {
+    font-size: 1.1rem;
+    color: #fdbb2d;
+}
+
+.ruangan-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.room-badge {
+    background: rgba(52, 152, 219, 0.3);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.no-schedule {
+    text-align: center;
+    padding: 2.5rem;
+    opacity: 0.7;
+    font-size: 1.1rem;
+}
+
+/* ===== STYLING UNTUK SEMUA MAPEL ===== */
+.mapel-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding: 1.2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.mapel-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    margin: 1.2rem 0;
+    border-radius: 12px;
+    border-left: 4px solid #fdbb2d;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.mapel-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.mapel-main h4 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #fdbb2d;
+}
+
+.sks-badge {
+    background: rgba(253, 187, 45, 0.3);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.mapel-details p {
+    margin: 0.5rem 0;
+    opacity: 0.9;
+    font-size: 1rem;
+}
+
+/* ===== BOTTOM NAVIGATION ===== */
 .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -130,8 +382,6 @@ body {
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
-
-/* Tablet */
 @media (max-width: 1024px) {
     .bottom-nav {
         padding: 0.7rem 0;
@@ -144,9 +394,18 @@ body {
     .nav-icon {
         font-size: 1.5rem;
     }
+    
+    .jadwal-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .jadwal-type {
+        margin-left: 0;
+    }
 }
 
-/* Mobile */
 @media (max-width: 768px) {
     .bottom-nav {
         padding: 0.6rem 0;
@@ -164,9 +423,14 @@ body {
     .nav-text {
         font-size: 0.7rem;
     }
+    
+    .ruangan-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
 }
 
-/* Small Mobile */
 @media (max-width: 480px) {
     .bottom-nav {
         padding: 0.5rem 0;
@@ -184,9 +448,16 @@ body {
     .nav-text {
         font-size: 0.65rem;
     }
+    
+    .jadwal-item strong {
+        font-size: 1rem;
+    }
+    
+    .mapel-main h4 {
+        font-size: 1.1rem;
+    }
 }
 
-/* Landscape Mode - Hide text */
 @media (max-width: 768px) and (orientation: landscape) {
     .nav-text {
         display: none;
@@ -202,229 +473,21 @@ body {
     }
 }
 
-/* ===== STYLING UNTUK INFO RUANGAN ===== */
-.ruangan-header {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-}
-
-.ruangan-item {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 1rem;
-    margin: 0.8rem 0;
-    border-radius: 10px;
-    border-left: 4px solid #3498db;
-}
-
-.mapel-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-}
-
-.mapel-info strong {
-    font-size: 1.1rem;
-}
-
-.ruangan-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.room-badge {
-    background: rgba(52, 152, 219, 0.3);
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-weight: 600;
-}
-
-.no-schedule {
-    text-align: center;
-    padding: 2rem;
-    opacity: 0.7;
-}
-
-/* ===== STYLING UNTUK SEMUA MAPEL ===== */
-.mapel-header {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-}
-
-.mapel-item {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 1.2rem;
-    margin: 1rem 0;
-    border-radius: 10px;
-    border-left: 4px solid #fdbb2d;
-}
-
-.mapel-main {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.8rem;
-}
-
-.mapel-main h4 {
-    margin: 0;
-    font-size: 1.2rem;
-}
-
-.sks-badge {
-    background: rgba(253, 187, 45, 0.3);
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-weight: 600;
-}
-
-.mapel-details p {
-    margin: 0.3rem 0;
-    opacity: 0.9;
-}
-
-/* ===== CONTAINER UNTUK KONTEN DINAMIS ===== */
-.content-container {
-    display: none;
-    animation: fadeIn 0.3s ease;
-}
-
-.content-active {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-    }
-    
-/* Tambah padding untuk konten utama */
-.container {
-    padding-bottom: 90px !important;
-        }
-
-/* Container Utama */
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-    text-align: center;
-}
-
-/* Welcome Text */
-.welcome-text {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 2rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    line-height: 1.2;
-}
-
-/* DateTime */
-.datetime {
-    margin-bottom: 3rem;
-}
-
-#time {
-    font-size: 3.5rem;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-}
-
-#date {
-    font-size: 1.5rem;
-    opacity: 0.9;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-}
-
-/* Section Umum */
-.section {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    padding: 1.5rem;
-    border-radius: 15px;
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
-
-.section h2 {
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-}
-
-/* List Jadwal & Tugas */
-.schedule-list, .task-list {
-    list-style: none;
-    text-align: left;
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-.schedule-list li, .task-list li {
-    padding: 0.8rem;
-    margin: 0.5rem 0;
-    background: rgba(255,255,255,0.1);
-    border-radius: 8px;
-    border-left: 4px solid #fdbb2d;
-    transition: transform 0.2s ease;
-}
-
-.schedule-list li:hover, .task-list li:hover {
-    transform: translateX(5px);
-    background: rgba(255,255,255,0.15);
-}
-
-/* Tugas khusus */
-.task-list li {
-    border-left-color: #3498db;
-}
-
-/* Responsif */
-@media (max-width: 768px) {
-    .container {
-        padding: 1rem;
-    }
-    
-    .welcome-text {
-        font-size: 2rem;
-    }
-    
+@media (max-width: 320px) {
     #time {
-        font-size: 2.5rem;
-    }
-    
-    .bg-logo {
-        font-size: 30vw;
-    }
-    
-    .section {
-        padding: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .welcome-text {
         font-size: 1.8rem;
     }
     
-    #time {
-        font-size: 2rem;
-    }
-    
     #date {
-        font-size: 1.2rem;
+        font-size: 0.9rem;
     }
     
     .section h2 {
-        font-size: 1.3rem;
+        font-size: 1.1rem;
     }
-}
+    
+    .jadwal-type {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.6rem;
+    }
+        }
